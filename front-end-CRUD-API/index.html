@@ -36,6 +36,8 @@
         <div class="col-sm-12">
 
           <form>
+            <input id="marcaMaquina" class="form-control" type="text" placeholder="Digite a marca da máquina">
+            <br />
             <a class="btn btn-primary" onclick="searchMaquina()">Buscar</a>
           </form>
 
@@ -44,28 +46,17 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h3 id='title'></h3>
-        <p id='description'></p>
-        <p id='imdb'></p>
-        <img id="my_image" class="img-fluid">
-      </div>
-    </div>
+  <div id="exibeInfo" class="container">
+    
   </div>
   <br />
 
   <script>
     function searchMaquina() {
-      $('#capacidade').empty();
-      $('#materiaisDeConstrucao').empty();
-      $('#sistemaDeAquecimento').empty();
-      $("#sistemaDeRefrigeracao").empty();
-      $("#dimensoes").empty();
-      $("#marca").empty();
-      $("#modelo").empty();
-
+      $('.imm').empty();
+      /*$('#description').empty();
+      $('#imdb').empty();
+      $("#my_image").empty(); */
 
       var settings = {
         "async": true,
@@ -76,12 +67,18 @@
 
       $.ajax(settings).done(function (response) {
         console.log(response);
-        //$('#title').append(response.Title + "(" + response.Year + ")");
-        //$("#my_image").attr("src", response.Poster);
-        //$('#description').append(response.Plot);
-        //$('#imdb').append("IMDB: " + response.imdbRating);
-      });
+        var maquinas = response.maquinas;
+        console.log (maquinas);
 
+          var tela = document.querySelector('.exibeInfo');
+            if (maquinas && maquinas.length > 0){
+            for(var i = 0; i < maquinas.length; i++){
+                tela.innerHTML = `Capacidade: ${response.maquina[i].capacidade}<br>`;
+                tela.innerHTML = `Marca: ${response.maquina[i].marca}<br>`;
+                tela.innerHTML = `Modelo: ${response.maquina[i].modelo}<br>`;
+            }}
+        
+        });
     }
   </script>
   
