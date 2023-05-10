@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <title>Busca de Filmes</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <meta name="theme-color" content="#132235"/>
+  <link rel="manifest" href="manifest.json">
+  <!-- Hotjar Tracking Code for https://pedantic-clarke-ebf939.netlify.app/ -->
+	<script>
+		(function(h,o,t,j,a,r){
+			h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+			h._hjSettings={hjid:2434567,hjsv:6};
+			a=o.getElementsByTagName('head')[0];
+			r=o.createElement('script');r.async=1;
+			r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+			a.appendChild(r);
+		})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+	</script>
+  
+</head>
+
+
+<body>
+
+  <div class="jumbotron text-center">
+    <h1>Busca de Máquinas</h1>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <form>
+            <a class="btn btn-primary" onclick="searchMaquina()">Buscar</a>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 id='title'></h3>
+        <p id='description'></p>
+        <p id='imdb'></p>
+        <img id="my_image" class="img-fluid">
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <script>
+    function searchMaquina() {
+      $('#capacidade').empty();
+      $('#materiaisDeConstrucao').empty();
+      $('#sistemaDeAquecimento').empty();
+      $("#sistemaDeRefrigeracao").empty();
+      $("#dimensoes").empty();
+      $("#marca").empty();
+      $("#modelo").empty();
+
+
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "http://127.0.0.1:3000/maquina/",
+        "method": "GET"
+      }
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        //$('#title').append(response.Title + "(" + response.Year + ")");
+        //$("#my_image").attr("src", response.Poster);
+        //$('#description').append(response.Plot);
+        //$('#imdb').append("IMDB: " + response.imdbRating);
+      });
+
+    }
+  </script>
+  
+  <script>
+    let newWorker;
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+          // A wild service worker has appeared in reg.installing!
+          newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            // Has network.state changed?
+            switch (newWorker.state) {
+              case 'installed':
+                if (navigator.serviceWorker.controller) {
+                  // new update available
+                }
+                // No update available
+                break;
+            }
+          });
+        });
+      });
+      let refreshing;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+      });
+    }
+  </script>
+</body>
+
+</html>
